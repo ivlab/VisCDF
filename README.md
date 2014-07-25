@@ -18,3 +18,7 @@ Install the project:
   ```
   make install
   ```
+
+### Contribute
+
+If you would like to contribute to the project, please read [Contributing and Collaborating](https://github.com/ivlab/VisCDF/wiki/Contributing-and-Collaborating).
