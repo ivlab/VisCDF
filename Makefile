@@ -1,3 +1,18 @@
+# Copyright Regents of the University of Minnesota.
+# This software is released under the following license: http://opensource.org/licenses/lgpl-3.0.html
+# Source code originally developed at the University of Minnesota Interactive Visualization Lab
+# 	(http://ivlab.cs.umn.edu).
+# Funding for this software development was provided in part by the NSF (IIS-1251069) and 
+#	NIH (1R01EB018205-01).
+# Any opinions, findings, and conclusions or recommendations expressed in this material are those
+#	of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+# The content is solely the responsibility of the authors and does not necessarily represent the
+#	 official views of the National Institutes of Health.
+#
+# Code author(s):
+#	Dan Orban
+#
+
 #.SILENT:
 
 ifneq ($(WINDIR),)
@@ -19,6 +34,7 @@ else
   endif
 endif
 
+DIRNAME=$(shell basename `pwd`)
 
 all: gen
 
@@ -27,8 +43,10 @@ gen:
    ifeq ($(ARCH), linux)
 	mkdir -p ./build/Release
 	mkdir -p ./build/Debug
+	mkdir -p ../$(DIRNAME)_eclipse
 	cd ./build/Release; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(CURDIR)/install ../../
 	cd ./build/Debug; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$(CURDIR)/install ../../
+	cd ../$(DIRNAME)_eclipse; cmake -DCMAKE_BUILD_TYPE=Debug $(CURDIR) -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.3
     else ifeq ($(ARCH), WIN32)
 	cd ./build; cmake -DCMAKE_INSTALL_PREFIX=$(WINCURDIR)/install ../ -G "Visual Studio 10 Win64"
     else ifeq ($(ARCH), OSX)
@@ -68,3 +86,4 @@ clean:
 clobber:
 	rm -rf ./build
 	rm -rf ./install
+	rm -rf ../$(DIRNAME)_eclipse
