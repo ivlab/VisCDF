@@ -1,0 +1,66 @@
+#
+# Copyright Regents of the University of Minnesota, 2014.  This software is released under the following license: http://opensource.org/licenses/lgpl-3.0.html.
+# Source code originally developed at the University of Minnesota Interactive Visualization Lab (http://ivlab.cs.umn.edu).
+#
+# Funding for this software development was provided in part by the NSF (IIS-1251069) and NIH (1R01EB018205-01).
+# Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
+#
+# The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
+#
+# Code author(s):
+# 		Dan Orban (dtorban)
+#
+
+
+VisCDF FEA File Specification - Version 1.0
+---------------------------------------------
+The following is NetCDF file specification for loading and saving FEA data through VisCDF.
+
+* Root Group
+	- Attributes: (Optional)
+	- Dimensions: (Optional)
+	- Variables: (Optional)
+	
+	* mesh Group - Stores the node and element structure
+		- Attributes: (Optional)
+		- Dimensions: (Optional)
+		- Variables: (Optional)
+		
+		* part Group - Can have as many part groups as desired and can be named anything
+			- Attributes: (Optional)
+			- Dimensions:
+				nodeNo - Number of nodes (vertices)
+				coordinate - This number should be 3 = (x,y,z)
+				elementNo - Number of elements (i.e. hexahedra, tetrahedra, etc...)
+				connectivity - Defines the type of element (i.e. hexahedron = 8, tetrahedra = 4)
+			- Variables
+				float nodes(nodeNo, coordinate) - The node data (vertices)
+				int elements(elementNo, connectivity) - The elements (each int represents an index for the nodes)
+    
+    * results Group - The results of the fea simulation
+		- Attributes: (Optional)
+		- Dimensions: (Optional)
+		- Variables: (Optional)
+    	
+    	* simulation Group - Can have as many simulation groups as desired and can be named anything
+			- Attributes: (Optional)
+			- Dimensions: (Optional)
+			- Variables: (Optional)
+    	
+    		* frame Group - Represents a time step frame.  Can have many frame groups as desired and
+    							must be named "frame_"<frame number> (i.e. frame_0, frame_1, etc...)
+    			- Attributes: (Optional)
+				- Dimensions:
+					time - Must be equal to 1 and is for getting the stepTime value
+				- Variables: (Optional)
+					float stepTime(time) - The time step that the frame represents
+					
+				* part Group - Cooresponds the the mesh group described mesh group and must be named the same
+					- Attributes: (Optional)
+					- Dimensions:
+						nodeNo - Number of nodes (vertices)
+						Tensor_U - Used for displacement (U)
+						(Optional Dimensions for other variables)
+					- Variables:
+						float U(nodeNo, Tensor_U) - The displacement data for the part
+						(Optional variables) - Other variables can be named anything, but the first dimension

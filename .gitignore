@@ -41,3 +41,7 @@ Session.vim
 *.exe
 *.out
 *.app
+
+# NetCDF
+*.nc
+*.cdl
