@@ -42,13 +42,13 @@ gen:
 	mkdir -p ./build/Release
 	mkdir -p ./build/Debug
 	mkdir -p ../$(DIRNAME)_eclipse
-	cd ./build/Release; cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$(CURDIR)/install ../../
-	cd ./build/Debug; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=$(CURDIR)/install ../../
+	cd ./build/Release; cmake -DCMAKE_BUILD_TYPE=Release ../../
+	cd ./build/Debug; cmake -DCMAKE_BUILD_TYPE=Debug ../../
 	cd ../$(DIRNAME)_eclipse; cmake -DCMAKE_BUILD_TYPE=Debug $(CURDIR) -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.3
     else ifeq ($(ARCH), WIN32)
-	cd ./build; cmake -DCMAKE_INSTALL_PREFIX=$(WINCURDIR)/install ../ -G "Visual Studio 10 Win64"
+	cd ./build; cmake ../ -G "Visual Studio 10 Win64"
     else ifeq ($(ARCH), OSX)
-	cd ./build; cmake -DCMAKE_INSTALL_PREFIX=$(CURDIR)/install ../ -G Xcode
+	cd ./build; cmake ../ -G Xcode
     endif
 
 debug:
