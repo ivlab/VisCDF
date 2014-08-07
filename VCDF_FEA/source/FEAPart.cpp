@@ -39,9 +39,9 @@ void FEAPart::loadMesh(float nodes[][3], int* elements) {
 	_meshGroup->getVariable("elements")->getData(elements);
 }
 
-std::vector<std::string> FEAPart::getVariables() {
+std::vector<std::string> FEAPart::getVariables(int resultSet) {
 	std::vector<std::string> variables;
-	std::vector<viscdfcore::VariableRef> vars = getFrames()[0]->_frameGroup->getGroup("nodalData")->getVariables();
+	std::vector<viscdfcore::VariableRef> vars = getFrames(resultSet)[0]->_frameGroup->getGroup("nodalData")->getVariables();
 	for (int f = 0; f < vars.size(); f++)
 	{
 		if (vars[f]->getDimensions().size() == 1)
@@ -52,9 +52,9 @@ std::vector<std::string> FEAPart::getVariables() {
 	return variables;
 }
 
-std::vector<FEAFrameRef> FEAPart::getFrames() {
+std::vector<FEAFrameRef> FEAPart::getFrames(int resultSet) {
 	std::string name = getName();
-	std::vector<viscdfcore::IVcGroup::IVcGroupRef> groups = _resultGroup->getGroups();
+	std::vector<viscdfcore::IVcGroup::IVcGroupRef> groups = _resultGroup->getGroups()[resultSet]->getGroups();
 	std::vector<FEAFrameRef> frameGroups;
 	for (int f = 0; f < groups.size(); f++)
 	{

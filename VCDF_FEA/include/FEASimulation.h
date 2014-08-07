@@ -27,6 +27,8 @@ public:
 	/*! @brief Constructor which loads a NetCDF file.*/
 	FEASimulation(std::string filename);
 	virtual ~FEASimulation();
+	/*! @brief Gets the available result sets.*/
+	std::vector<std::string> getResultSets();
 	/*! @brief The parts that represent separate entities in a simulation.*/
 	std::vector<FEAPartRef> getParts();
 };

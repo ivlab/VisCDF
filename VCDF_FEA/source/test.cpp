@@ -102,13 +102,19 @@ main()
 	reader.close();
 
 	FEASimulation sim(string(FILE_NAME));
+	vector<string> resultSets = sim.getResultSets();
+	for (int f = 0; f < resultSets.size(); f++)
+	{
+		cout << "Result Set " << f << ": " << resultSets[f] << endl;
+	}
+
 	vector<FEAPartRef> parts = sim.getParts();
 	for (int f = 0; f < parts.size(); f++)
 	{
 		int numElements = parts[f]->getNumElements();
 		int numNodes = parts[f]->getNumNodes();
 		int connectivity = parts[f]->getConnectivity();
-		vector<FEAFrameRef> frames = parts[f]->getFrames();
+		vector<FEAFrameRef> frames = parts[f]->getFrames(0);
 
 		cout << parts[f]->getName() << " ";
 		cout << numElements << " ";
@@ -128,7 +134,7 @@ main()
 			cout << elements[i][0] << " " << elements[i][1] << " " << elements[i][2] << endl;
 		}
 
-		vector<string> variables = parts[f]->getVariables();
+		vector<string> variables = parts[f]->getVariables(0);
 
 		float var[numNodes];
 

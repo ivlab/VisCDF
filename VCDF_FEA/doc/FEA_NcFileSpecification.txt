@@ -42,7 +42,7 @@ The following is NetCDF file specification for loading and saving FEA data throu
 		- Dimensions: (Optional)
 		- Variables: (Optional)
     	
-    	* simulation Group - Can have as many simulation groups as desired and can be named anything
+    	* result set Group - Can have as many simulation groups as desired and can be named anything
 			- Attributes: (Optional)
 			- Dimensions: (Optional)
 			- Variables: (Optional)

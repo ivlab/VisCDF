@@ -34,9 +34,9 @@ public:
 	/*! @brief Defines the geometry of the element (i.e. hexahedron = 8, tetrahedra = 4).*/
 	int getConnectivity();
 	/*! @brief Gets the available node specific variables.*/
-	std::vector<std::string> getVariables();
+	std::vector<std::string> getVariables(int resultSet);
 	/*! @brief Gets the time frames for a simulation.*/
-	std::vector<FEAFrameRef> getFrames();
+	std::vector<FEAFrameRef> getFrames(int resultSet);
 
 	/*! @brief Load's the nodes and element parts of the mesh or geometry.
 	 *  @remarks Nodes and elements should be allocated before passing in.

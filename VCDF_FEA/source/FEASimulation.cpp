@@ -24,6 +24,18 @@ FEASimulation::FEASimulation(std::string filename) : VcContainerBase(filename)
 FEASimulation::~FEASimulation() {
 }
 
+std::vector<std::string> FEASimulation::getResultSets() {
+	std::vector<std::string> resultSets;
+	std::vector<IVcGroup::IVcGroupRef> groups = getGroup()->getGroup("results")->getGroups();
+
+	for (int f = 0; f < groups.size(); f++)
+	{
+		resultSets.push_back(groups[f]->getName());
+	}
+
+	return resultSets;
+}
+
 std::vector<FEAPartRef> FEASimulation::getParts() {
 	std::vector<FEAPartRef> parts;
 	IVcGroup::IVcGroupRef group = getGroup();
@@ -38,7 +50,7 @@ std::vector<FEAPartRef> FEASimulation::getParts() {
 		}
 		else if (groups[f]->getName() == "results")
 		{
-			resultGroup = groups[f]->getGroups()[0];
+			resultGroup = groups[f];
 		}
 	}
 
