@@ -139,7 +139,7 @@ add_executable(testfea ${SOURCEFILES})
 #indepdent way it would appear in the command line (i.e. -l<libtoadd>)
 #If the second is way is used you need to sure the directory the lib is
 #in will be found
-target_link_libraries (testfea ${LIBS_DEBUG} ${LIBS_OPT} ${LIBS_ALL} X11 pthread netcdf)
+target_link_libraries (testfea ${LIBS_DEBUG} ${LIBS_OPT} ${LIBS_ALL} netcdf)
 
 #Second an example of a library target
 #It should default to making a static library

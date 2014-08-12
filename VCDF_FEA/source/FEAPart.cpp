@@ -34,8 +34,8 @@ int FEAPart::getConnectivity() {
 	return _meshGroup->getDimension("connectivity").getLength();
 }
 
-void FEAPart::loadMesh(float nodes[][3], int* elements) {
-	_meshGroup->getVariable("nodes")->getData(&nodes[0][0]);
+void FEAPart::loadMesh(float* nodes, int* elements) {
+	_meshGroup->getVariable("nodes")->getData(nodes);
 	_meshGroup->getVariable("elements")->getData(elements);
 }
 
@@ -60,7 +60,7 @@ std::vector<FEAFrameRef> FEAPart::getFrames(int resultSet) {
 	{
 		if(groups[f]->getName().find("frame_") != std::string::npos)
 		{
-			float stepTime;
+			float stepTime = 0;
 			groups[f]->getVariable("stepTime")->getData(&stepTime);
 			frameGroups.push_back(new FEAFrame(groups[f]->getGroup(name), stepTime));
 		}

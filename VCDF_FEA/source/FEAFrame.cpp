@@ -28,11 +28,11 @@ viscdfcore::VariableRef FEAFrame::getFrameVariable(std::string name) {
 }
 
 
-void FEAFrame::getDisplacement(float displacement[][3]) {
-	getFrameVariable("U")->getData(&displacement[0][0]);
+void FEAFrame::getDisplacement(float *displacement) {
+	getFrameVariable("U")->getData(displacement);
 }
 
-void FEAFrame::calcDisplacement(float newNodes[][3], float nodes[][3], int numNodes)
+void FEAFrame::calcDisplacement(float* newNodes, float* nodes, int numNodes)
 {
 	getDisplacement(newNodes);
 
@@ -40,7 +40,7 @@ void FEAFrame::calcDisplacement(float newNodes[][3], float nodes[][3], int numNo
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			newNodes[f][i] += nodes[f][i];
+			newNodes[f*3 + i] += nodes[f*3 + i];
 		}
 	}
 }

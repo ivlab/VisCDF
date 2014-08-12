@@ -66,13 +66,15 @@ void listVars(IVcGroup::IVcGroupRef group, int level)
 
 		if (vars[f]->getName() == "MAGNITUDE2")
 		{
-			float data[vars[f]->getDimensions()[0].getLength()];
+			float *data = new float[vars[f]->getDimensions()[0].getLength()];
 			vars[f]->getData(&data[0]);
 			for (int x = 0; x < vars[f]->getDimensions()[0].getLength(); x++)
 			{
 				cout << data[x] << " ";
 			}
 			cout << endl;
+
+			delete [] data;
 		}
 	}
 }
@@ -86,6 +88,7 @@ void listGroups(IVcGroup::IVcGroupRef group, int level)
 	cout << group->getName() << endl;
 	listDims(group, level);
 	listVars(group, level);
+	
 	vector<IVcGroup::IVcGroupRef> groups = group->getGroups();
 	for (int f = 0; f < groups.size(); f++)
 	{
@@ -123,20 +126,20 @@ main()
 		cout << frames.size() << " ";
 		cout << endl;
 
-		float nodes[numNodes][3];
-		int elements[numElements][connectivity];
+		float *nodes = new float[numNodes * 3];
+		int *elements = new int[numElements * connectivity];
 
-		parts[f]->loadMesh(nodes, &elements[0][0]);
+		parts[f]->loadMesh(nodes, elements);
 
 		for (int i = 0; i < 10; i++)
 		{
-			cout << nodes[i][0] << " " << nodes[i][1] << " " << nodes[i][2] << endl;
-			cout << elements[i][0] << " " << elements[i][1] << " " << elements[i][2] << endl;
+			cout << nodes[i*3 + 0] << " " << nodes[i*3 + 1] << " " << nodes[i*3 + 2] << endl;
+			cout << elements[i*8 + 0] << " " << elements[i*8 + 1] << " " << elements[i*8 + 2] << endl;
 		}
 
 		vector<string> variables = parts[f]->getVariables(0);
 
-		float var[numNodes];
+		float *var = new float[numNodes];
 
 		for (int i = 0; i < variables.size(); i++)
 		{
@@ -155,18 +158,24 @@ main()
 			//cout << "Time: " << frames[i]->getStepTime() << endl;
 		}
 
-		float displacement[numNodes][3];
-		float timeMesh[numNodes][3];
+		float *displacement = new float[numNodes * 3];
+		float *timeMesh = new float[numNodes * 3];
 
 		frames[10]->getDisplacement(displacement);
 		frames[10]->calcDisplacement(timeMesh, nodes, numNodes);
 
 		for (int i = 0; i < 2; i++)
 		{
-			cout << "n " << nodes[i][0] << " " << nodes[i][1] << " " << nodes[i][2] << endl;
-			cout << "d " << displacement[i][0] << " " << displacement[i][1] << " " << displacement[i][2] << endl;
-			cout << "t " << timeMesh[i][0] << " " << timeMesh[i][1] << " " << timeMesh[i][2] << endl;
+			cout << "n " << nodes[i*3 + 0] << " " << nodes[i*3 + 1] << " " << nodes[i*3 + 2] << endl;
+			cout << "d " << displacement[i*3 + 0] << " " << displacement[i*3 + 1] << " " << displacement[i*3 + 2] << endl;
+			cout << "t " << timeMesh[i*3 + 0] << " " << timeMesh[i*3 + 1] << " " << timeMesh[i*3 + 2] << endl;
 		}
+
+		delete [] nodes;
+		delete [] elements;
+		delete [] var;
+		delete [] displacement;
+		delete [] timeMesh;
 	}
 
    cout << "Success!" << endl;

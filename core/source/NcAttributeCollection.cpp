@@ -31,12 +31,15 @@ std::string NcAttributeCollection::getText(const std::string& key) {
 	if ((res = nc_inq_att(_ncid, _varid, key.c_str(), &type, &len)))
 		ERR(res);
 
-	char val[len];
+	char *val = new char[len+1];
 
 	if ((res = nc_get_att_text(_ncid, _varid, key.c_str(), val)))
 	        ERR(res);
 
-	return std::string(val);
+	val[len] = '\0';
+	std::string str = std::string(val);
+	delete [] val;
+	return str;
 }
 
 } /* namespace viscdfcore */

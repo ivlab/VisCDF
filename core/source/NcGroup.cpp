@@ -27,8 +27,8 @@ NcGroup::NcGroup(int ncid, std::string name) : _atts(ncid) {
 	int res;
 	if ((res = nc_inq(_ncid, &_ndims_in, &_nvars_in, &_ngatts_in, &_unlimdimid_in)))
 		ERR(res);
-
-	int dimids[_ndims_in];
+	
+	int *dimids = new int[NC_MAX_DIMS];
 
 	if ((res = nc_inq_dimids(_ncid, &_ndims_in, dimids, 1)))
 			ERR(res);
@@ -43,8 +43,10 @@ NcGroup::NcGroup(int ncid, std::string name) : _atts(ncid) {
 
 		_dims.push_back(NcDimension(dimids[f], std::string(name), len));
 	}
+		
+	delete [] dimids;
 
-	int varids[_nvars_in];
+	int *varids = new int[_nvars_in];
 
 	if ((res = nc_inq_varids(_ncid, &_nvars_in, varids)))
 			ERR(res);
@@ -53,6 +55,8 @@ NcGroup::NcGroup(int ncid, std::string name) : _atts(ncid) {
 	{
 		_vars.push_back(new NcVariable(ncid, varids[f], _dims));
 	}
+
+	delete varids;
 }
 
 NcGroup::~NcGroup() {
@@ -98,7 +102,7 @@ std::string NcGroup::getName()
 	}
 
 	int res;
-	char grpName[32];
+	char grpName[MAX_NC_NAME+1];
 	if ((res = nc_inq_grpname(_ncid, grpName)))
 		ERR(res);
 	return std::string(grpName);

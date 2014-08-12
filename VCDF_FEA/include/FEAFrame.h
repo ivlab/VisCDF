@@ -28,10 +28,10 @@ public:
 	float getStepTime() const { return _stepTime; }
 	/*! @brief Loads the displacement data.
 	 *  @remarks Displacement array should be allocated float displacement[numNodes][3]*/
-	void getDisplacement(float displacement[][3]);
+	void getDisplacement(float* displacement);
 	/*! @brief Calculates the new node locations based on the displacement.
 	 *  @remarks The new nodes should be the same allocated dimension set as the old nodes.*/
-	void calcDisplacement(float newNodes[][3], float nodes[][3], int numNodes);
+	void calcDisplacement(float* newNodes, float* nodes, int numNodes);
 	/*! @brief Gets data for a specific variable for this frame.
 	 *  @remarks The data should be allocated to the dimensions for the variable.*/
 	void getVariable(std::string name, float* data);
