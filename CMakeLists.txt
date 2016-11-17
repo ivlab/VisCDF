@@ -18,6 +18,8 @@ if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set (CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/../install" CACHE PATH "default install path" FORCE )
 endif()
 
+SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH} )
+
 #This way will auto detect all source files in the directory,
 #while this will work, the preferred technique is to list out
 #sourcefiles individually.  This will allow cmake to automatically
@@ -64,6 +66,13 @@ source_group("Header Files" FILES ${HEADERFILES})
 #find_package method should be used here.
 ############################################################
 
+find_package(NetCDF)
+
+if(NETCDF_FOUND)
+message("NETCDF was FOUND")
+endif(NETCDF_FOUND)
+
+include_directories(${NETCDF_INCLUDES})
 
 ############################################################
 #End external library searching
@@ -139,7 +148,7 @@ add_executable(testfea ${SOURCEFILES})
 #indepdent way it would appear in the command line (i.e. -l<libtoadd>)
 #If the second is way is used you need to sure the directory the lib is
 #in will be found
-target_link_libraries (testfea ${LIBS_DEBUG} ${LIBS_OPT} ${LIBS_ALL} netcdf)
+target_link_libraries (testfea ${LIBS_DEBUG} ${LIBS_OPT} ${LIBS_ALL} ${NETCDF_LIBRARIES})
 
 #Second an example of a library target
 #It should default to making a static library
