@@ -39,12 +39,12 @@ void FEAPart::loadMesh(float* nodes, int* elements) {
 	_meshGroup->getVariable("elements")->getData(elements);
 }
 
-std::vector<std::string> FEAPart::getVariables(int resultSet) {
+std::vector<std::string> FEAPart::getVariables(int resultSet, bool includeAll) {
 	std::vector<std::string> variables;
 	std::vector<viscdfcore::VariableRef> vars = getFrames(resultSet)[0]->_frameGroup->getGroup("nodalData")->getVariables();
 	for (int f = 0; f < vars.size(); f++)
 	{
-		if (vars[f]->getDimensions().size() == 1)
+		if (vars[f]->getDimensions().size() == 1 || includeAll)
 		{
 			variables.push_back(vars[f]->getName());
 		}

@@ -34,7 +34,7 @@ public:
 	/*! @brief Defines the geometry of the element (i.e. hexahedron = 8, tetrahedra = 4).*/
 	int getConnectivity();
 	/*! @brief Gets the available node specific variables.*/
-	std::vector<std::string> getVariables(int resultSet);
+	std::vector<std::string> getVariables(int resultSet, bool includeAll = false);
 	/*! @brief Gets the time frames for a simulation.*/
 	std::vector<FEAFrameRef> getFrames(int resultSet);
 
