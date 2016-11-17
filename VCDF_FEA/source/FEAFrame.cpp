@@ -23,6 +23,10 @@ void FEAFrame::getVariable(std::string name, float* data) {
 	getFrameVariable(name)->getData(data);
 }
 
+std::vector<viscdfcore::VariableRef> FEAFrame::getVariables() {
+	return _frameGroup->getGroup("nodalData")->getVariables();
+}
+
 viscdfcore::VariableRef FEAFrame::getFrameVariable(std::string name) {
 	return _frameGroup->getGroup("nodalData")->getVariable(name);
 }

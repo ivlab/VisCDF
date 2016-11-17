@@ -16,6 +16,7 @@
 
 #include "memory/CountedPtr.h"
 #include "VcGroup.h"
+#include <vector>
 
 namespace vcdf_fea {
 
@@ -35,6 +36,8 @@ public:
 	/*! @brief Gets data for a specific variable for this frame.
 	 *  @remarks The data should be allocated to the dimensions for the variable.*/
 	void getVariable(std::string name, float* data);
+	/*! @brief Gets variable information for frame. */
+	std::vector<viscdfcore::VariableRef> getVariables();
 private:
 	FEAFrame(viscdfcore::IVcGroup::IVcGroupRef frameGroup, float stepTime) : _frameGroup(frameGroup), _stepTime(stepTime) {}
 	viscdfcore::VariableRef getFrameVariable(std::string name);
