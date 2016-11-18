@@ -29,6 +29,12 @@ public:
 	virtual std::vector<Dimension> getDimensions() = 0;
 	virtual void getData(float *data) = 0;
 	virtual void getData(int *data) = 0;
+	virtual unsigned int getDataType() = 0;
+
+	enum {
+		VARIABLE_INT = 4,
+		VARIABLE_FLOAT = 5
+	};
 };
 
 typedef CountedPtr<Variable> VariableRef;

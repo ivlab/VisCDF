@@ -30,12 +30,14 @@ public:
 	std::vector<Dimension> getDimensions() { return _dims; };
 	virtual void getData(float *data);
 	virtual void getData(int *data);
+	unsigned int getDataType();
 private:
 	int _ncid;
 	int _varid;
 	NcAttributeCollection _atts;
 	std::string _name;
 	std::vector<Dimension> _dims;
+	unsigned int _type;
 };
 
 } /* namespace viscdfcore */

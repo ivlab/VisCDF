@@ -12,6 +12,7 @@
  */
 
 #include "netcdf/NcVariable.h"
+#include <iostream>
 
 namespace viscdfcore {
 
@@ -24,6 +25,7 @@ NcVariable::NcVariable(int ncid, int varid, const std::vector<NcDimension> &dime
 	if ((res = nc_inq_var(_ncid, _varid, name, &type, &numDims, dimids, &numAtts)))
 		ERR(res);
 	_name = std::string(name);
+	_type = type;
 
 	for (int i = 0; i < dimensions.size(); i++)
 	{
@@ -61,5 +63,10 @@ void NcVariable::getData(int* data) {
 		ERR(res);
 }
 
+unsigned int NcVariable::getDataType() {
+	return _type;
 }
+
+}
+
 /* namespace viscdfcore */
