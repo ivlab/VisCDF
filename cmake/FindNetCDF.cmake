@@ -30,6 +30,7 @@
 #
 #  NETCDF_INCLUDES    - where to find netcdf.h, etc
 #  NETCDF_LIBRARIES   - Link these libraries when using NetCDF
+#  NETCDF_EXECUTABLE_DIR	  - Executable directory for NetCDF
 #  NETCDF_FOUND       - True if NetCDF found including required interfaces (see below)
 #
 # Your package can require certain interfaces to be FOUND by setting these
@@ -52,15 +53,43 @@
 #  target_link_libraries (uses_f90_interface ${NETCDF_LIBRARIES})
 #  target_link_libraries (only_uses_c_interface ${NETCDF_LIBRARIES_C})
 
-if (NETCDF_INCLUDES AND NETCDF_LIBRARIES)
+#if (NETCDF_INCLUDES AND NETCDF_LIBRARIES)
   # Already in cache, be silent
-  set (NETCDF_FIND_QUIETLY TRUE)
-endif (NETCDF_INCLUDES AND NETCDF_LIBRARIES)
+#  set (NETCDF_FIND_QUIETLY TRUE)
+#endif (NETCDF_INCLUDES AND NETCDF_LIBRARIES)
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	MACRO(SUBDIRLIST result curdir query)
+	  FILE(GLOB children RELATIVE ${curdir} ${curdir}${query})
+	  SET(dirlist "")
+	  FOREACH(child ${children})
+	    IF(IS_DIRECTORY ${curdir}/${child})
+	      LIST(APPEND dirlist ${child})
+	    ENDIF()
+	  ENDFOREACH()
+	  SET(${result} ${dirlist})
+	ENDMACRO()
+
+	set(SUBDIRS "")
+
+	SUBDIRLIST(SUBDIRS "C:/Program Files" /netCDF*)
+	
+	FOREACH(subdir ${SUBDIRS})
+	  set(NETCDF_DIR C:/Program\ Files/${subdir})
+	ENDFOREACH()
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 find_path (NETCDF_INCLUDES netcdf.h
-  HINTS NETCDF_DIR ENV NETCDF_DIR)
+  HINTS 
+  	${NETCDF_DIR} 
+  	$ENV{NETCDF_DIR}
+  	${NETCDF_DIR}/include
+)
 
-find_library (NETCDF_LIBRARIES_C       NAMES netcdf)
+find_library (NETCDF_LIBRARIES_C       NAMES netcdf
+ HINTS
+  	${NETCDF_DIR}/lib
+)
 mark_as_advanced(NETCDF_LIBRARIES_C)
 
 set (NetCDF_has_interfaces "YES") # will be set to NO if we're missing any interfaces
@@ -88,11 +117,12 @@ NetCDF_check_interface (CXX netcdfcpp.h netcdf_c++)
 NetCDF_check_interface (F77 netcdf.inc  netcdff)
 NetCDF_check_interface (F90 netcdf.mod  netcdff)
 
-set (NETCDF_LIBRARIES "${NetCDF_libs}" CACHE STRING "All NetCDF libraries required for interface level")
+set (NETCDF_LIBRARIES "${NetCDF_libs}")
+set (NETCDF_EXECUTABLE_DIR ${NETCDF_INCLUDES}/../bin)
 
 # handle the QUIETLY and REQUIRED arguments and set NETCDF_FOUND to TRUE if
 # all listed variables are TRUE
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (NetCDF DEFAULT_MSG NETCDF_LIBRARIES NETCDF_INCLUDES NetCDF_has_interfaces)
+find_package_handle_standard_args (NetCDF DEFAULT_MSG NETCDF_LIBRARIES NETCDF_INCLUDES NetCDF_has_interfaces NETCDF_EXECUTABLE_DIR)
 
-mark_as_advanced (NETCDF_LIBRARIES NETCDF_INCLUDES)
+mark_as_advanced (NETCDF_LIBRARIES NETCDF_INCLUDES NETCDF_EXECUTABLE_DIR)

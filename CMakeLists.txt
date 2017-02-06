@@ -66,7 +66,7 @@ source_group("Header Files" FILES ${HEADERFILES})
 #find_package method should be used here.
 ############################################################
 
-find_package(NetCDF)
+find_package(netCDF)
 
 if(NETCDF_FOUND)
 message("NETCDF was FOUND")
@@ -150,6 +150,18 @@ add_executable(testfea ${SOURCEFILES})
 #If the second is way is used you need to sure the directory the lib is
 #in will be found
 target_link_libraries (testfea ${LIBS_DEBUG} ${LIBS_OPT} ${LIBS_ALL} ${NETCDF_LIBRARIES})
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	FILE(GLOB children RELATIVE ${NETCDF_EXECUTABLE_DIR} ${NETCDF_EXECUTABLE_DIR}/*.dll)
+	FOREACH(child ${children})
+	    add_custom_command(TARGET testfea POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/Debug
+			COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/Release
+			COMMAND ${CMAKE_COMMAND} -E copy ${NETCDF_EXECUTABLE_DIR}/${child} ${PROJECT_BINARY_DIR}/Debug/${child}
+			COMMAND ${CMAKE_COMMAND} -E copy ${NETCDF_EXECUTABLE_DIR}/${child} ${PROJECT_BINARY_DIR}/Release/${child}
+		)
+	ENDFOREACH()
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 #Second an example of a library target
 #It should default to making a static library
