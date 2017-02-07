@@ -66,7 +66,7 @@ source_group("Header Files" FILES ${HEADERFILES})
 #find_package method should be used here.
 ############################################################
 
-find_package(netCDF)
+find_package(NetCDF)
 
 if(NETCDF_FOUND)
 message("NETCDF was FOUND")
